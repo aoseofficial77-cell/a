@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>AOSE — Timeless Elegance, Modern Legacy</title>
+    <meta name="description" content="Step into vibrancy with AOSE. Premium quality, breathable fabrics, and timeless designs. Shop the new collection." />
+
+    <!-- ===== FONTS ===== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- ===== FONT AWESOME ===== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ============================================================
+                   ROOT & RESET
+                   ============================================================ */
+        :root {
+            --parchment: #f3ecdb;
+            --parchment-deep: #e8dec4;
+            --ink: #16241a;
+            --emerald: #163826;
+            --emerald-light: #234d34;
+            --gold: #c9a24b;
+            --gold-light: #e3c87e;
+            --gold-dim: rgba(201, 162, 75, .35);
+            --serif: 'Playfair Display', serif;
+            --script: 'Cormorant Garamond', serif;
+            --sans: 'Inter', sans-serif;
+            --transition-smooth: cubic-bezier(.25, .46, .45, .94);
+            --shadow-gold: 0 24px 60px rgba(201, 162, 75, .15);
+            --radius: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: var(--sans);
+            background:
+                radial-gradient(ellipse at top, rgba(255, 255, 255, .5), transparent 60%),
+                linear-gradient(180deg, var(--parchment), var(--parchment-deep));
+            color: var(--ink);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body.loading {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        ::selection {
+            background: var(--gold);
+            color: var(--emerald);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+        }
+
+        /* ============================================================
+                   GRAIN & VIGNETTE
+                   ============================================================ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            box-shadow: inset 0 0 200px rgba(22, 36, 26, .18);
+        }
+
+        /* ============================================================
+                   LOADER
+                   ============================================================ */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, #1c3a26 0%, #0f2117 75%);
+            transition: opacity .9s cubic-bezier(.25, .46, .45, .94), visibility .9s;
+            perspective: 900px;
+        }
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-stage {
+            width: 170px;
+            height: 170px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: loaderSpin 3.2s cubic-bezier(.45, .05, .55, .95) infinite;
+        }
+
+        @keyframes loaderSpin {
+            0% {
+                transform: rotateY(0deg) rotateX(8deg);
+            }
+            50% {
+                transform: rotateY(180deg) rotateX(-6deg);
+            }
+            100% {
+                transform: rotateY(360deg) rotateX(8deg);
+            }
+        }
+
+        .loader-face {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+        }
+
+        .loader-face svg {
+            width: 140px;
+            height: 140px;
+            filter: drop-shadow(0 0 18px rgba(201, 162, 75, .35));
+        }
+
+        .loader-face.back {
+            transform: rotateY(180deg);
+        }
+
+        .loader-ring {
+            position: absolute;
+            inset: -26px;
+            border-radius: 50%;
+            border: 1px solid rgba(201, 162, 75, .25);
+            border-top-color: var(--gold);
+            animation: ringSpin 1.6s linear infinite;
+        }
+
+        @keyframes ringSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-word {
+            margin-top: 44px;
+            font-family: var(--serif);
+            letter-spacing: 8px;
+            font-size: 1.5rem;
+            color: var(--parchment);
+            opacity: 0;
+            animation: wordIn 1s ease forwards .6s;
+        }
+
+        .loader-word .gold {
+            color: var(--gold);
+        }
+
+        .loader-tag {
+            margin-top: 10px;
+            font-family: var(--script);
+            font-style: italic;
+            font-size: .92rem;
+            letter-spacing: 2px;
+            color: rgba(243, 236, 219, .5);
+            opacity: 0;
+            animation: wordIn 1s ease forwards 1s;
+        }
+
+        .loader-bar {
+            width: 160px;
+            height: 1px;
+            background: rgba(243, 236, 219, .12);
+            margin-top: 30px;
+            overflow: hidden;
+            opacity: 0;
+            animation: wordIn .8s ease forwards 1.2s;
+        }
+
+        .loader-bar i {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold-light), var(--gold));
+        }
+
+        @keyframes wordIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ============================================================
+                   SCROLL PROGRESS
+                   ============================================================ */
+        #progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold-light), var(--gold));
+            z-index: 2000;
+            transition: width .08s linear;
+        }
+
+        /* ============================================================
+                   HEADER / NAV
+                   ============================================================ */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 48px;
+            background: rgba(243, 236, 219, .7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+            transition: padding .4s var(--transition-smooth),
+                background .4s var(--transition-smooth),
+                border-color .4s var(--transition-smooth),
+                box-shadow .4s var(--transition-smooth);
+        }
+
+        header.scrolled {
+            padding: 8px 48px;
+            background: rgba(243, 236, 219, .94);
+            border-color: var(--gold-dim);
+            box-shadow: 0 4px 30px rgba(22, 36, 26, .06);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            color: var(--emerald);
+            transition: transform .3s var(--transition-smooth);
+        }
+        .brand:hover {
+            transform: scale(1.03);
+        }
+        .brand .brand-logo {
+            width: 36px;
+            height: 36px;
+        }
+        .brand .gold {
+            color: var(--gold);
+        }
+
+        nav.links {
+            display: flex;
+            gap: 36px;
+            align-items: center;
+        }
+        nav.links a {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 500;
+            position: relative;
+            color: var(--emerald);
+            padding-bottom: 4px;
+            transition: color .3s;
+        }
+        nav.links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--gold);
+            transition: width .4s var(--transition-smooth);
+        }
+        nav.links a:hover::after,
+        nav.links a.active::after {
+            width: 100%;
+        }
+        nav.links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-cta {
+            padding: 10px 28px;
+            border: 1px solid var(--emerald);
+            border-radius: 2px;
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--emerald);
+            transition: all .4s var(--transition-smooth);
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--emerald);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform .4s var(--transition-smooth);
+            z-index: -1;
+        }
+        .nav-cta:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .nav-cta:hover {
+            color: var(--parchment);
+        }
+
+        .burger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--emerald);
+            font-size: 1.5rem;
+            z-index: 1300;
+            padding: 4px 8px;
+            line-height: 1;
+            transition: transform .3s;
+        }
+        .burger:hover {
+            transform: rotate(90deg);
+        }
+
+        /* ============================================================
+                   MOBILE MENU
+                   ============================================================ */
+        .mobile-panel {
+            position: fixed;
+            inset: 0 0 0 auto;
+            top: 0;
+            right: -100%;
+            width: min(85vw, 360px);
+            height: 100vh;
+            background: var(--emerald);
+            color: var(--parchment);
+            padding: 100px 40px 40px;
+            z-index: 1200;
+            transition: right .5s cubic-bezier(.25, .46, .45, .94);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+        .mobile-panel.open {
+            right: 0;
+        }
+        .mobile-panel a {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(243, 236, 219, .08);
+            font-family: var(--serif);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            transition: color .3s, padding-left .3s;
+        }
+        .mobile-panel a:hover {
+            color: var(--gold);
+            padding-left: 8px;
+        }
+
+        .scrim {
+            position: fixed;
+            inset: 0;
+            background: rgba(22, 36, 26, .5);
+            z-index: 1100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .5s;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .scrim.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ============================================================
+                   HERO
+                   ============================================================ */
+        #hero-logo {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 140px 24px 100px;
+            text-align: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 30% 40%, rgba(201, 162, 75, .12), transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(22, 36, 26, .06), transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero-brand-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroFadeIn 1.2s var(--transition-smooth) .2s forwards;
+        }
+        .hero-brand-logo svg {
+            width: 64px;
+            height: 64px;
+            filter: drop-shadow(0 4px 20px rgba(201, 162, 75, .3));
+        }
+        .hero-brand-logo .brand-text {
+            font-family: var(--serif);
+            font-size: 2.4rem;
+            letter-spacing: 8px;
+            color: var(--emerald);
+        }
+        .hero-brand-logo .brand-text .gold {
+            color: var(--gold);
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-weight: 600;
+            line-height: 1.05;
+            font-size: clamp(3rem, 9vw, 6.5rem);
+            color: var(--emerald);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroFadeIn 1.2s var(--transition-smooth) .4s forwards;
+        }
+
+        .hero-title .gold {
+            background: linear-gradient(120deg, var(--gold-light), var(--gold) 60%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-style: italic;
+            font-family: var(--script);
+            font-weight: 500;
+        }
+
+        .hero-sub {
+            margin: 20px auto 0;
+            max-width: 560px;
+            font-family: var(--script);
+            font-size: 1.3rem;
+            color: #3c4d3f;
+            font-style: italic;
+            letter-spacing: .3px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: heroFadeIn 1.2s var(--transition-smooth) .6s forwards;
+        }
+
+        .hero-tagline {
+            margin: 12px auto 0;
+            font-size: .85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: heroFadeIn 1.2s var(--transition-smooth) .7s forwards;
+        }
+
+        .hero-actions {
+            margin-top: 40px;
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: heroFadeIn 1.2s var(--transition-smooth) .9s forwards;
+        }
+
+        @keyframes heroFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-cue {
+            position: absolute;
+            bottom: 34px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: .6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #5c6a5e;
+            opacity: 0;
+            animation: fadeInScroll 1s 1.2s forwards, bob 2.6s ease-in-out infinite;
+        }
+        @keyframes fadeInScroll {
+            to {
+                opacity: 1;
+            }
+        }
+        .scroll-cue i {
+            width: 1px;
+            height: 36px;
+            background: linear-gradient(var(--gold), transparent);
+            display: block;
+            font-style: normal;
+        }
+        @keyframes bob {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(8px);
+            }
+        }
+
+        /* ============================================================
+                   BUTTONS
+                   ============================================================ */
+        .btn {
+            padding: 15px 40px;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 600;
+            border-radius: 2px;
+            transition: all .4s var(--transition-smooth);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-gold {
+            background: var(--gold);
+            color: var(--emerald);
+        }
+        .btn-gold:hover {
+            background: var(--gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(201, 162, 75, .35);
+        }
+        .btn-line {
+            background: transparent;
+            border: 1px solid var(--emerald);
+            color: var(--emerald);
+        }
+        .btn-line:hover {
+            background: var(--emerald);
+            color: var(--parchment);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(22, 36, 26, .15);
+        }
+        .btn-dark {
+            background: var(--emerald);
+            color: var(--parchment);
+        }
+        .btn-dark:hover {
+            background: var(--emerald-light);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(22, 36, 26, .25);
+        }
+        .btn-sm {
+            padding: 10px 24px;
+            font-size: .6rem;
+        }
+
+        /* ============================================================
+                   SHARED SECTION
+                   ============================================================ */
+        section {
+            position: relative;
+            z-index: 2;
+        }
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 32px;
+        }
+        .wrap-sm {
+            padding: 70px 32px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 14px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        .eyebrow::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 34px;
+            height: 2px;
+            background: var(--gold);
+        }
+        .eyebrow-center {
+            text-align: center;
+        }
+        .eyebrow-center::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .head {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 56px;
+        }
+        .head h2 {
+            font-family: var(--serif);
+            font-size: clamp(2rem, 4vw, 2.9rem);
+            color: var(--emerald);
+            font-weight: 600;
+            line-height: 1.15;
+        }
+        .head p {
+            margin-top: 14px;
+            color: #4a594d;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity .9s var(--transition-smooth),
+                transform .9s var(--transition-smooth);
+        }
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================================
+                   PRODUCT CARDS
+                   ============================================================ */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
+        }
+
+        .product-card {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: rgba(255, 255, 255, .5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--gold-dim);
+            transition: transform .5s var(--transition-smooth),
+                box-shadow .5s var(--transition-smooth);
+            group: true;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 30px 70px rgba(22, 36, 26, .12);
+        }
+
+        .product-card .product-image {
+            width: 100%;
+            aspect-ratio: 1/1.1;
+            overflow: hidden;
+            position: relative;
+        }
+        .product-card .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .8s var(--transition-smooth);
+        }
+        .product-card:hover .product-image img {
+            transform: scale(1.08);
+        }
+
+        .product-card .product-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: var(--gold);
+            color: var(--emerald);
+            font-size: .55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            z-index: 2;
+            animation: badgePulse 2.5s ease-in-out infinite;
+        }
+        @keyframes badgePulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .product-card .product-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(22, 36, 26, .7));
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            transform: translateY(100%);
+            transition: transform .4s var(--transition-smooth);
+            z-index: 2;
+        }
+        .product-card:hover .product-actions {
+            transform: translateY(0);
+        }
+        .product-card .product-actions .btn {
+            padding: 8px 20px;
+            font-size: .6rem;
+            background: var(--gold);
+            color: var(--emerald);
+            border-radius: 20px;
+            letter-spacing: 1.5px;
+        }
+        .product-card .product-actions .btn:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+        .product-card .product-actions .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, .5);
+            color: #fff;
+        }
+        .product-card .product-actions .btn-outline:hover {
+            background: rgba(255, 255, 255, .2);
+        }
+
+        .product-card .product-info {
+            padding: 18px 20px 20px;
+            text-align: center;
+        }
+        .product-card .product-info h4 {
+            font-family: var(--serif);
+            font-size: 1rem;
+            color: var(--emerald);
+            margin-bottom: 4px;
+        }
+        .product-card .product-info .product-category {
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            font-weight: 500;
+        }
+        .product-card .product-info .product-price {
+            font-size: .9rem;
+            font-weight: 700;
+            color: var(--emerald);
+            margin-top: 6px;
+            letter-spacing: .5px;
+        }
+        .product-card .product-info .product-price .rupee {
+            font-family: var(--serif);
+            margin-right: 2px;
+        }
+        .product-card .product-info .product-features {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 8px;
+            font-size: .6rem;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: #5c6a5e;
+        }
+        .product-card .product-info .product-features span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .product-card .product-info .product-features i {
+            color: var(--gold);
+            font-size: .5rem;
+        }
+
+        /* ============================================================
+                   CATEGORY / COLLECTION BANNER
+                   ============================================================ */
+        .collection-banner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(22, 36, 26, .04), rgba(201, 162, 75, .08));
+            border: 1px solid var(--gold-dim);
+            padding: 48px 52px;
+            align-items: center;
+        }
+        .collection-banner .banner-text h2 {
+            font-family: var(--serif);
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            color: var(--emerald);
+            line-height: 1.15;
+        }
+        .collection-banner .banner-text p {
+            color: #4a594d;
+            margin: 12px 0 20px;
+            font-weight: 300;
+            line-height: 1.7;
+            max-width: 400px;
+        }
+        .collection-banner .banner-text .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 24px;
+            margin: 16px 0;
+        }
+        .collection-banner .banner-text .feature-list span {
+            font-size: .8rem;
+            color: #3c4d3f;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .collection-banner .banner-text .feature-list i {
+            color: var(--gold);
+            font-size: .7rem;
+        }
+        .collection-banner .banner-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .collection-banner .banner-image img {
+            max-width: 100%;
+            max-height: 280px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 20px 50px rgba(22, 36, 26, .1);
+            transition: transform .6s var(--transition-smooth);
+        }
+        .collection-banner .banner-image img:hover {
+            transform: scale(1.02);
+        }
+
+        /* ============================================================
+                   FEATURES STRIP
+                   ============================================================ */
+        .features-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            padding: 40px 0;
+            border-top: 1px solid var(--gold-dim);
+            border-bottom: 1px solid var(--gold-dim);
+        }
+        .features-strip .feature-item {
+            text-align: center;
+            padding: 16px;
+            transition: transform .4s var(--transition-smooth);
+        }
+        .features-strip .feature-item:hover {
+            transform: translateY(-4px);
+        }
+        .features-strip .feature-item i {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .features-strip .feature-item h5 {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--emerald);
+            font-weight: 600;
+        }
+        .features-strip .feature-item p {
+            font-size: .75rem;
+            color: #5c6a5e;
+            font-weight: 300;
+            margin-top: 4px;
+        }
+
+        /* ============================================================
+                   TESTIMONIALS
+                   ============================================================ */
+        .testi {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+        .t-card {
+            background: rgba(255, 255, 255, .5);
+            border: 1px solid var(--gold-dim);
+            border-radius: var(--radius);
+            padding: 34px 30px;
+            text-align: center;
+            transition: transform .4s var(--transition-smooth),
+                box-shadow .4s var(--transition-smooth);
+        }
+        .t-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-gold);
+        }
+        .t-card .stars {
+            color: var(--gold);
+            font-size: .8rem;
+            letter-spacing: 3px;
+            margin-bottom: 14px;
+        }
+        .t-card blockquote {
+            font-family: var(--script);
+            font-style: italic;
+            font-size: 1.08rem;
+            color: #33402f;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        .t-card .who {
+            font-weight: 600;
+            font-size: .82rem;
+            color: var(--emerald);
+        }
+        .t-card .role {
+            font-size: .7rem;
+            color: #5c6a5e;
+        }
+
+        /* ============================================================
+                   INSTAGRAM FEED
+                   ============================================================ */
+        .insta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .insta-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+            transition: transform .4s var(--transition-smooth);
+        }
+        .insta-item:hover {
+            transform: scale(1.04);
+            z-index: 2;
+        }
+        .insta-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .6s var(--transition-smooth);
+        }
+        .insta-item:hover img {
+            transform: scale(1.1);
+        }
+        .insta-item .insta-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(22, 36, 26, .35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            color: #fff;
+            opacity: 0;
+            transition: opacity .4s;
+            font-size: .85rem;
+        }
+        .insta-item:hover .insta-overlay {
+            opacity: 1;
+        }
+        .insta-item .insta-overlay span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .insta-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+        .insta-header i {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+        .insta-header h3 {
+            font-family: var(--serif);
+            font-size: 1.6rem;
+            color: var(--emerald);
+        }
+
+        /* ============================================================
+                   CONTACT
+                   ============================================================ */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 56px;
+        }
+        .info-line {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            margin-bottom: 14px;
+            font-size: .92rem;
+            color: #3c4d3f;
+            transition: color .3s;
+            padding: 6px 0;
+        }
+        .info-line:hover {
+            color: var(--emerald);
+        }
+        .info-line .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gold);
+            flex-shrink: 0;
+        }
+        .info-line i {
+            width: 20px;
+            color: var(--gold);
+            font-size: 1rem;
+        }
+
+        form {
+            background: rgba(255, 255, 255, .5);
+            border: 1px solid var(--gold-dim);
+            border-radius: var(--radius);
+            padding: 40px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: box-shadow .4s;
+        }
+        form:hover {
+            box-shadow: var(--shadow-gold);
+        }
+        .field {
+            margin-bottom: 20px;
+        }
+        .field label {
+            display: block;
+            font-size: .62rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #5c6a5e;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .field input,
+        .field textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(22, 36, 26, .1);
+            border-radius: 8px;
+            font-family: var(--sans);
+            font-size: .9rem;
+            background: rgba(255, 255, 255, .7);
+            color: var(--ink);
+            outline: none;
+            transition: border-color .3s, box-shadow .3s, background .3s;
+        }
+        .field input:focus,
+        .field textarea:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px var(--gold-dim);
+            background: rgba(255, 255, 255, .9);
+        }
+        .field textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+        form .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ============================================================
+                   WHATSAPP FLOATING BUTTON + MODAL
+                   ============================================================ */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+        .wa-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #25D366;
+            color: #fff;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, .4);
+            transition: transform .4s var(--transition-smooth),
+                box-shadow .4s var(--transition-smooth);
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+        .wa-btn:hover {
+            transform: scale(1.08) rotate(-6deg);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, .5);
+        }
+        .wa-btn .pulse {
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px solid rgba(37, 211, 102, .3);
+            animation: waPulse 2s ease-out infinite;
+        }
+        @keyframes waPulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .wa-modal {
+            position: fixed;
+            bottom: 100px;
+            right: 28px;
+            z-index: 950;
+            width: 360px;
+            max-width: calc(100vw - 40px);
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .25);
+            transform: scale(.9) translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all .4s cubic-bezier(.25, .46, .45, .94);
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, .05);
+        }
+        .wa-modal.open {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .wa-modal-header {
+            background: #075E54;
+            color: #fff;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .wa-modal-header h4 {
+            font-family: var(--serif);
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .wa-modal-header h4 i {
+            font-size: 1.3rem;
+        }
+        .wa-modal-header .close-wa {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, .7);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color .3s, transform .3s;
+        }
+        .wa-modal-header .close-wa:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+        .wa-modal-body {
+            padding: 24px 22px 28px;
+        }
+        .wa-modal-body p {
+            font-size: .9rem;
+            color: #3c4d3f;
+            margin-bottom: 16px;
+        }
+        .wa-modal-body .wa-number {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .95rem;
+            font-weight: 600;
+            color: var(--emerald);
+            padding: 10px 14px;
+            background: #f0f7f0;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .wa-modal-body .wa-number i {
+            color: #25D366;
+            font-size: 1.2rem;
+        }
+        .wa-modal-body .wa-number a {
+            color: var(--emerald);
+            transition: color .3s;
+        }
+        .wa-modal-body .wa-number a:hover {
+            color: #25D366;
+        }
+        .wa-modal-body .wa-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .wa-modal-body .wa-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e0e7e0;
+            border-radius: 8px;
+            font-family: var(--sans);
+            font-size: .85rem;
+            outline: none;
+            transition: border-color .3s;
+        }
+        .wa-modal-body .wa-input input:focus {
+            border-color: #25D366;
+        }
+        .wa-modal-body .wa-input button {
+            padding: 12px 20px;
+            background: #25D366;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: .8rem;
+            transition: background .3s, transform .3s;
+            cursor: pointer;
+        }
+        .wa-modal-body .wa-input button:hover {
+            background: #1da851;
+            transform: scale(1.03);
+        }
+        .wa-modal-body .wa-payment {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e8ece8;
+        }
+        .wa-modal-body .wa-payment p {
+            font-size: .8rem;
+            color: #5c6a5e;
+            margin-bottom: 10px;
+        }
+        .wa-modal-body .wa-payment .payment-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .wa-modal-body .wa-payment .payment-options button {
+            padding: 8px 18px;
+            border: 1px solid var(--gold-dim);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .7);
+            font-size: .7rem;
+            font-weight: 500;
+            color: var(--emerald);
+            transition: all .3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .wa-modal-body .wa-payment .payment-options button:hover {
+            background: var(--gold);
+            color: #fff;
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        footer {
+            background: var(--emerald);
+            color: var(--parchment);
+            padding: 70px 32px 28px;
+            position: relative;
+            z-index: 2;
+        }
+        .foot-grid {
+            max-width: 1200px;
+            margin: 0 auto 44px;
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: 48px;
+        }
+        .foot-brand {
+            font-family: var(--serif);
+            font-size: 1.7rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .foot-brand svg {
+            width: 32px;
+            height: 32px;
+        }
+        .foot-grid p {
+            color: rgba(243, 236, 219, .55);
+            font-weight: 300;
+            font-size: .88rem;
+            line-height: 1.7;
+            max-width: 300px;
+        }
+        .foot-col h4 {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            color: var(--gold-light);
+        }
+        .foot-col a {
+            display: block;
+            font-size: .85rem;
+            color: rgba(243, 236, 219, .55);
+            margin-bottom: 10px;
+            transition: color .3s, padding-left .3s;
+        }
+        .foot-col a:hover {
+            color: var(--gold);
+            padding-left: 6px;
+        }
+        .foot-social {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+        }
+        .foot-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(243, 236, 219, .15);
+            color: rgba(243, 236, 219, .5);
+            transition: all .3s;
+            font-size: 1rem;
+        }
+        .foot-social a:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-3px);
+        }
+        .foot-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 24px;
+            border-top: 1px solid rgba(243, 236, 219, .08);
+            text-align: center;
+            font-size: .7rem;
+            color: rgba(243, 236, 219, .3);
+            letter-spacing: 1px;
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 1100px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .collection-banner {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 36px 28px;
+            }
+            .collection-banner .banner-text .feature-list {
+                justify-items: center;
+            }
+            .collection-banner .banner-text p {
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .features-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .testi {
+                grid-template-columns: 1fr;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .insta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .foot-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            nav.links,
+            .nav-cta {
+                display: none;
+            }
+            .burger {
+                display: block;
+            }
+            header {
+                padding: 14px 22px;
+            }
+            header.scrolled {
+                padding: 10px 22px;
+            }
+            .wrap {
+                padding: 70px 20px;
+            }
+            .hero-brand-logo .brand-text {
+                font-size: 1.6rem;
+                letter-spacing: 4px;
+            }
+            .hero-brand-logo svg {
+                width: 44px;
+                height: 44px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .product-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .product-card .product-actions {
+                transform: translateY(0);
+                position: relative;
+                background: transparent;
+                padding: 12px 16px 16px;
+            }
+            .product-card .product-actions .btn {
+                font-size: .5rem;
+                padding: 6px 14px;
+            }
+            .product-card .product-info h4 {
+                font-size: .85rem;
+            }
+            .features-strip {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                padding: 24px 0;
+            }
+            .features-strip .feature-item i {
+                font-size: 1.2rem;
+            }
+            .collection-banner {
+                padding: 24px 18px;
+            }
+            .collection-banner .banner-text .feature-list {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            .hero-title {
+                font-size: 2.4rem;
+            }
+            .hero-sub {
+                font-size: 1rem;
+            }
+            .hero-brand-logo .brand-text {
+                font-size: 1.2rem;
+                letter-spacing: 3px;
+            }
+            .hero-brand-logo svg {
+                width: 34px;
+                height: 34px;
+            }
+            header {
+                padding: 10px 16px;
+            }
+            header.scrolled {
+                padding: 8px 16px;
+            }
+            .brand {
+                font-size: 1.1rem;
+                gap: 8px;
+            }
+            .brand .brand-logo {
+                width: 28px;
+                height: 28px;
+            }
+            .wrap {
+                padding: 50px 14px;
+            }
+            .insta-grid {
+                gap: 6px;
+            }
+            .foot-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .wa-btn {
+                width: 52px;
+                height: 52px;
+                font-size: 1.6rem;
+            }
+            .wa-modal-body {
+                padding: 18px 16px 22px;
+            }
+            .wa-modal-body .wa-input {
+                flex-direction: column;
+            }
+            .wa-modal-body .wa-input button {
+                width: 100%;
+                justify-content: center;
+            }
+            .wa-modal {
+                right: 16px;
+                bottom: 90px;
+                width: calc(100vw - 32px);
+            }
+            .testi {
+                gap: 16px;
+            }
+            .t-card {
+                padding: 24px 18px;
+            }
+            form {
+                padding: 24px 16px;
+            }
+            .scroll-cue {
+                bottom: 16px;
+                font-size: .5rem;
+            }
+            .scroll-cue i {
+                height: 24px;
+            }
+            .loader-stage {
+                width: 100px;
+                height: 100px;
+            }
+            .loader-face svg {
+                width: 80px;
+                height: 80px;
+            }
+            .loader-word {
+                font-size: 1.1rem;
+                letter-spacing: 5px;
+                margin-top: 30px;
+            }
+            .loader-tag {
+                font-size: .75rem;
+            }
+            .loader-bar {
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .product-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .product-card .product-info h4 {
+                font-size: .75rem;
+            }
+            .product-card .product-info .product-category {
+                font-size: .5rem;
+            }
+            .product-card .product-info .product-price {
+                font-size: .75rem;
+            }
+            .product-card .product-info .product-features {
+                font-size: .5rem;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: .6rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading">
+
+    <!-- ============================================================
+    LOADER
+    ============================================================ -->
+    <div id="loader">
+        <div class="loader-stage">
+            <div class="loader-ring"></div>
+            <div class="loader-face front">
+                <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="70" cy="70" r="58" stroke="#c9a24b" stroke-width="1.4"/>
+                    <circle cx="70" cy="70" r="50" stroke="#c9a24b" stroke-width="1" opacity=".5"/>
+                    <path d="M70 16 C58 22 40 30 30 36 M70 16 C82 22 100 30 110 36" stroke="#c9a24b" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M48 92 L60 56 L70 76 L80 52 L92 92" stroke="#e3c87e" stroke-width="3.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                    <path d="M58 60 L52 50 M82 56 L88 47" stroke="#e3c87e" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="loader-face back">
+                <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="70" cy="70" r="58" stroke="#c9a24b" stroke-width="1.4"/>
+                    <path d="M70 70 L70 24 M70 70 L108 92 M70 70 L32 92" stroke="#c9a24b" stroke-width="1" opacity=".4"/>
+                    <circle cx="70" cy="70" r="6" fill="#c9a24b"/>
+                </svg>
+            </div>
+        </div>
+        <div class="loader-word">A<span class="gold">O</span>SE</div>
+        <div class="loader-tag">Timeless Elegance, Modern Legacy</div>
+        <div class="loader-bar"><i id="loaderFill"></i></div>
+    </div>
+
+    <!-- ===== SCROLL PROGRESS ===== -->
+    <div id="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header id="header" role="banner">
+        <div class="brand">
+            <svg class="brand-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="50" cy="50" r="46" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+                <path d="M30 65 L40 35 L48 50 L56 32 L66 65" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
+            A<span class="gold">O</span>SE
+        </div>
+
+        <nav class="links" aria-label="Main navigation">
+            <a href="#home" class="active">Home</a>
+            <a href="#products">Collections</a>
+            <a href="#about">About</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <button class="nav-cta" id="navCta"><i class="fas fa-shopping-bag"></i> Shop Now</button>
+
+        <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+            <span aria-hidden="true">☰</span>
+        </button>
+    </header>
+
+    <!-- ===== MOBILE MENU ===== -->
+    <div class="scrim" id="scrim" role="presentation"></div>
+    <nav class="mobile-panel" id="mobilePanel" aria-label="Mobile navigation">
+        <a href="#home">Home</a>
+        <a href="#products">Collections</a>
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
+    <section id="hero-logo" id="home">
+        <div class="hero-bg"></div>
+
+        <div class="hero-content">
+            <div class="hero-brand-logo">
+                <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="70" cy="70" r="58" stroke="#c9a24b" stroke-width="1.4"/>
+                    <circle cx="70" cy="70" r="50" stroke="#c9a24b" stroke-width="1" opacity=".5"/>
+                    <path d="M70 16 C58 22 40 30 30 36 M70 16 C82 22 100 30 110 36" stroke="#c9a24b" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M48 92 L60 56 L70 76 L80 52 L92 92" stroke="#163826" stroke-width="3.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                    <path d="M58 60 L52 50 M82 56 L88 47" stroke="#163826" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="brand-text">A<span class="gold">O</span>SE</span>
+            </div>
+
+            <h1 class="hero-title">
+                Step Into<br />
+                <span class="gold">Vibrancy</span>
+            </h1>
+
+            <p class="hero-tagline">The New AOSE Guide 10 Runner</p>
+            <p class="hero-sub">Timeless Elegance, Modern Legacy — Premium comfort for the modern individual.</p>
+
+            <div class="hero-actions">
+                <button class="btn btn-gold" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-shopping-bag"></i> Shop Now
+                </button>
+                <button class="btn btn-line" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-scroll"></i> Explore Story
+                </button>
+            </div>
+        </div>
+
+        <div class="scroll-cue" aria-hidden="true">
+            <span>Scroll</span>
+            <i></i>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FEATURES STRIP
+    ============================================================ -->
+    <section class="wrap wrap-sm" style="padding-top:20px;padding-bottom:20px;">
+        <div class="features-strip reveal">
+            <div class="feature-item">
+                <i class="fas fa-leaf"></i>
+                <h5>Premium Quality</h5>
+                <p>Finest materials, crafted to last</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-wind"></i>
+                <h5>Breathable Fabric</h5>
+                <p>All-day comfort, airy feel</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-tshirt"></i>
+                <h5>Modern Fit</h5>
+                <p>Tailored for the contemporary you</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-infinity"></i>
+                <h5>Timeless Design</h5>
+                <p>Effortless style, always relevant</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    PRODUCTS — CURATED COLLECTION
+    ============================================================ -->
+    <section class="wrap" id="products">
+        <div class="head reveal">
+            <span class="eyebrow">Our Collections</span>
+            <h2>Effortless Style. Made for Every Moment.</h2>
+            <p>Lightweight comfort, bold impressions — each piece speaks to timeless elegance and modern sophistication.</p>
+        </div>
+
+        <div class="product-grid">
+            <!-- Product 1: Heritage Classic -->
+            <div class="product-card reveal" style="animation-delay:.1s">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=600&q=80" alt="Heritage Classic - Premium quality shirt" loading="lazy" />
+                    <span class="product-badge">Bestseller</span>
+                    <div class="product-actions">
+                        <button class="btn btn-sm">Quick View</button>
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4>Heritage Classic</h4>
+                    <div class="product-category">Essential Collection</div>
+                    <div class="product-price"><span class="rupee">₹</span>3,999</div>
+                    <div class="product-features">
+                        <span><i class="fas fa-check-circle"></i> Premium</span>
+                        <span><i class="fas fa-check-circle"></i> Breathable</span>
+                        <span><i class="fas fa-check-circle"></i> Timeless</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2: Artful Print -->
+            <div class="product-card reveal" style="animation-delay:.2s">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80" alt="Artful Print - Vibrant abstract design" loading="lazy" />
+                    <span class="product-badge">New</span>
+                    <div class="product-actions">
+                        <button class="btn btn-sm">Quick View</button>
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4>Artful Print</h4>
+                    <div class="product-category">Abstract Collection</div>
+                    <div class="product-price"><span class="rupee">₹</span>4,499</div>
+                    <div class="product-features">
+                        <span><i class="fas fa-check-circle"></i> Abstract</span>
+                        <span><i class="fas fa-check-circle"></i> Lightweight</span>
+                        <span><i class="fas fa-check-circle"></i> Vibrant</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3: Effortless Stripes -->
+            <div class="product-card reveal" style="animation-delay:.3s">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=600&q=80" alt="Effortless Stripes - Modern striped shirt" loading="lazy" />
+                    <span class="product-badge">Trending</span>
+                    <div class="product-actions">
+                        <button class="btn btn-sm">Quick View</button>
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4>Effortless Stripes</h4>
+                    <div class="product-category">Striped Collection</div>
+                    <div class="product-price"><span class="rupee">₹</span>3,499</div>
+                    <div class="product-features">
+                        <span><i class="fas fa-check-circle"></i> Modern</span>
+                        <span><i class="fas fa-check-circle"></i> Breathable</span>
+                        <span><i class="fas fa-check-circle"></i> Sharp</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4: Cuban Collar -->
+            <div class="product-card reveal" style="animation-delay:.4s">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80" alt="Cuban Collar - Relaxed summer fit" loading="lazy" />
+                    <span class="product-badge">Premium</span>
+                    <div class="product-actions">
+                        <button class="btn btn-sm">Quick View</button>
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4>Cuban Collar</h4>
+                    <div class="product-category">Summer Collection</div>
+                    <div class="product-price"><span class="rupee">₹</span>4,799</div>
+                    <div class="product-features">
+                        <span><i class="fas fa-check-circle"></i> Cuban</span>
+                        <span><i class="fas fa-check-circle"></i> Soft</span>
+                        <span><i class="fas fa-check-circle"></i> Relaxed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:48px;" class="reveal">
+            <button class="btn btn-gold" onclick="alert('Explore our full collection →')">
+                <i class="fas fa-arrow-right"></i> View All Collections
+            </button>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    COLLECTION BANNER — Printed to Impress
+    ============================================================ -->
+    <section class="wrap wrap-sm">
+        <div class="collection-banner reveal">
+            <div class="banner-text">
+                <span class="eyebrow">Featured</span>
+                <h2>Printed to Impress</h2>
+                <p>Newspaper prints, modern style. Every detail makes a statement. Designed for those who dare to stand out.</p>
+                <div class="feature-list">
+                    <span><i class="fas fa-check-circle"></i> Classic Collar</span>
+                    <span><i class="fas fa-check-circle"></i> Soft & Breathable</span>
+                    <span><i class="fas fa-check-circle"></i> Premium Quality</span>
+                    <span><i class="fas fa-check-circle"></i> Trendy Print</span>
+                </div>
+                <button class="btn btn-gold btn-sm" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-shopping-bag"></i> Shop Now
+                </button>
+            </div>
+            <div class="banner-image">
+                <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=600&q=80" alt="Newspaper print shirt" loading="lazy" />
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    ABOUT — HERITAGE
+    ============================================================ -->
+    <section class="wrap" id="about">
+        <div class="split" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
+            <div class="split-text reveal">
+                <span class="eyebrow">Our Heritage</span>
+                <h2>Timeless Elegance,<br />Modern Legacy</h2>
+                <p>AOSE began as a study in what luxury looks like when it stops trying to prove itself. No noise, no excess — just material, proportion, and craft, carried forward with discipline.</p>
+                <p>Every piece is designed for effortless style, all-day comfort, and a timeless appeal that transcends seasons.</p>
+                <div class="stat-row" style="display:flex;gap:40px;margin-top:30px;flex-wrap:wrap;">
+                    <div><b>2010</b><span>Founded</span></div>
+                    <div><b>40+</b><span>Markets</span></div>
+                    <div><b>100%</b><span>In-house craft</span></div>
+                </div>
+            </div>
+            <img class="reveal" src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=900&q=80" alt="AOSE heritage" loading="lazy" style="border-radius:14px;box-shadow:0 30px 70px rgba(22,36,26,.12);" />
+        </div>
+    </section>
+
+    <!-- ============================================================
+    GALLERY
+    ============================================================ -->
+    <section class="wrap" id="gallery">
+        <div class="head reveal">
+            <span class="eyebrow">Visual Language</span>
+            <h2>Effortless Vibes</h2>
+            <p>Abstract designs that speak style. Lightweight comfort for everyday.</p>
+        </div>
+        <div class="gallery" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+            <a href="#" class="reveal" style="border-radius:10px;overflow:hidden;aspect-ratio:1/1;position:relative;display:block;">
+                <img src="https://images.unsplash.com/photo-1464699908537-0954e50791ee?auto=format&fit=crop&w=600&q=80" alt="Gallery" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .7s var(--transition-smooth);" />
+            </a>
+            <a href="#" class="reveal" style="border-radius:10px;overflow:hidden;aspect-ratio:1/1;position:relative;display:block;">
+                <img src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=600&q=80" alt="Gallery" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .7s var(--transition-smooth);" />
+            </a>
+            <a href="#" class="reveal" style="border-radius:10px;overflow:hidden;aspect-ratio:1/1;position:relative;display:block;">
+                <img src="https://images.unsplash.com/photo-1491438590914-bc09e98b0dd4?auto=format&fit=crop&w=600&q=80" alt="Gallery" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .7s var(--transition-smooth);" />
+            </a>
+            <a href="#" class="reveal" style="border-radius:10px;overflow:hidden;aspect-ratio:1/1;position:relative;display:block;">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Gallery" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .7s var(--transition-smooth);" />
+            </a>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    TESTIMONIALS
+    ============================================================ -->
+    <section class="wrap" id="testimonials">
+        <div class="head reveal">
+            <span class="eyebrow">Words From Clients</span>
+            <h2>What They Say</h2>
+        </div>
+        <div class="testi reveal">
+            <blockquote class="t-card">
+                <div class="stars" aria-hidden="true">★★★★★</div>
+                <p>“AOSE brought a level of restraint to our identity we didn't think possible — every detail earns its place.”</p>
+                <cite class="who">Victoria Chen</cite>
+                <span class="role">Creative Director</span>
+            </blockquote>
+            <blockquote class="t-card">
+                <div class="stars" aria-hidden="true">★★★★★</div>
+                <p>“A true partner in building a legacy, not just a launch. The craft shows in the smallest decisions.”</p>
+                <cite class="who">Marcus Thorne</cite>
+                <span class="role">Founder, Thorne &amp; Co.</span>
+            </blockquote>
+            <blockquote class="t-card">
+                <div class="stars" aria-hidden="true">★★★★★</div>
+                <p>“Working with AOSE felt like collaborating with artists — pure, considered elegance throughout.”</p>
+                <cite class="who">Elena Rossi</cite>
+                <span class="role">Brand Strategist</span>
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    INSTAGRAM FEED
+    ============================================================ -->
+    <section class="wrap" id="instagram">
+        <div class="head reveal">
+            <span class="eyebrow">Social</span>
+            <h2>Follow the Craft</h2>
+            <p>Behind the scenes, stories, and everyday elegance. <br /> <strong style="color:var(--gold);">@aose.studio</strong></p>
+        </div>
+
+        <div class="insta-grid reveal">
+            <div class="insta-item">
+                <img src="https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=600&q=80" alt="Instagram" loading="lazy" />
+                <div class="insta-overlay">
+                    <span><i class="far fa-heart"></i> 1.2k</span>
+                    <span><i class="far fa-comment"></i> 48</span>
+                </div>
+            </div>
+            <div class="insta-item">
+                <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80" alt="Instagram" loading="lazy" />
+                <div class="insta-overlay">
+                    <span><i class="far fa-heart"></i> 876</span>
+                    <span><i class="far fa-comment"></i> 32</span>
+                </div>
+            </div>
+            <div class="insta-item">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80" alt="Instagram" loading="lazy" />
+                <div class="insta-overlay">
+                    <span><i class="far fa-heart"></i> 2.1k</span>
+                    <span><i class="far fa-comment"></i> 94</span>
+                </div>
+            </div>
+            <div class="insta-item">
+                <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=600&q=80" alt="Instagram" loading="lazy" />
+                <div class="insta-overlay">
+                    <span><i class="far fa-heart"></i> 1.5k</span>
+                    <span><i class="far fa-comment"></i> 61</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    CONTACT
+    ============================================================ -->
+    <section class="wrap" id="contact">
+        <div class="head reveal">
+            <span class="eyebrow">Connect</span>
+            <h2>Let's Talk</h2>
+            <p>We'd love to hear from you — start your journey with AOSE today.</p>
+        </div>
+        <div class="contact-grid reveal">
+            <div>
+                <div class="info-line"><i class="fas fa-envelope"></i> hello@aose.studio</div>
+                <div class="info-line"><i class="fas fa-phone"></i> +1 (555) 000-0000</div>
+                <div class="info-line"><i class="fas fa-map-marker-alt"></i> New York, NY</div>
+                <div class="info-line"><i class="fas fa-clock"></i> Mon – Fri, 9am – 6pm EST</div>
+                <div class="info-line" style="margin-top:20px;">
+                    <a href="#" style="color:var(--gold);font-weight:500;display:flex;align-items:center;gap:8px;">
+                        <i class="fab fa-instagram"></i> @aose.studio
+                    </a>
+                    <span style="margin:0 8px;color:#ccc;">|</span>
+                    <a href="#" style="color:var(--gold);font-weight:500;display:flex;align-items:center;gap:8px;">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <form id="contactForm" novalidate>
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="Full name" required aria-required="true" />
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="you@example.com" required aria-required="true" />
+                </div>
+                <div class="field">
+                    <label for="message">Message</label>
+                    <textarea id="message" placeholder="Tell us about your vision..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-gold"><i class="fas fa-paper-plane"></i> Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer role="contentinfo">
+        <div class="foot-grid">
+            <div>
+                <div class="foot-brand">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="46" stroke="#c9a24b" stroke-width="1.5" opacity=".5"/>
+                        <path d="M30 65 L40 35 L48 50 L56 32 L66 65" stroke="#c9a24b" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                    </svg>
+                    AOSE
+                </div>
+                <p>Timeless Elegance, Modern Legacy. Premium comfort for those who value restraint over noise.</p>
+                <div class="foot-social">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <nav class="foot-col" aria-label="Footer navigation">
+                <h4>Navigate</h4>
+                <a href="#home">Home</a>
+                <a href="#products">Collections</a>
+                <a href="#about">About</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="foot-col">
+                <h4>Social</h4>
+                <a href="#"><i class="fab fa-instagram" style="margin-right:8px;"></i> Instagram</a>
+                <a href="#"><i class="fab fa-whatsapp" style="margin-right:8px;"></i> WhatsApp</a>
+                <a href="#"><i class="fab fa-pinterest" style="margin-right:8px;"></i> Pinterest</a>
+            </div>
+            <div class="foot-col">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+        <div class="foot-bottom">&copy; 2026 AOSE. All rights reserved. Crafted with <i class="fas fa-heart" style="color:var(--gold);font-size:.65rem;"></i></div>
+    </footer>
+
+    <!-- ============================================================
+    WHATSAPP FLOATING BUTTON + MODAL
+    ============================================================ -->
+    <div class="whatsapp-float">
+        <div class="wa-modal" id="waModal">
+            <div class="wa-modal-header">
+                <h4><i class="fab fa-whatsapp"></i> WhatsApp</h4>
+                <button class="close-wa" id="closeWa"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="wa-modal-body">
+                <p>Chat with us directly on WhatsApp — we're here to help.</p>
+                <div class="wa-number">
+                    <i class="fab fa-whatsapp"></i>
+                    <a href="https://wa.me/15550000000?text=Hello%20AOSE%2C%20I'd%20like%20to%20know%20more%20about%20your%20brand." target="_blank">+1 (555) 000-0000</a>
+                </div>
+                <div class="wa-input">
+                    <input type="text" id="waMessageInput" placeholder="Type a quick message..." />
+                    <button id="waSendBtn"><i class="fab fa-whatsapp"></i> Send</button>
+                </div>
+                <div class="wa-payment">
+                    <p><i class="fas fa-credit-card"></i> Quick Payment Options</p>
+                    <div class="payment-options">
+                        <button onclick="alert('UPI: aose@pay\nScan QR or send directly.')"><i class="fas fa-qrcode"></i> UPI</button>
+                        <button onclick="window.open('https://wa.me/15550000000?text=I%27d%20like%20to%20make%20a%20payment','_blank')"><i class="fab fa-whatsapp"></i> Pay via WhatsApp</button>
+                        <button onclick="alert('Payment link will be sent to your email.')"><i class="fas fa-envelope"></i> Email Invoice</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="wa-btn" id="waBtn" aria-label="WhatsApp">
+            <span class="pulse"></span>
+            <i class="fab fa-whatsapp"></i>
+        </button>
+    </div>
+
+    <!-- ============================================================
+    SCRIPTS
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // LOADER — show for 3 seconds then fade out
+        // ============================================================
+        (function() {
+            const loader = document.getElementById('loader');
+            const loaderFill = document.getElementById('loaderFill');
+            const body = document.body;
+
+            let startTime = null;
+            const duration = 3000;
+
+            function animateLoader(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const pct = progress * 100;
+                if (loaderFill) {
+                    loaderFill.style.width = pct + '%';
+                }
+                if (progress < 1) {
+                    requestAnimationFrame(animateLoader);
+                } else {
+                    loader.classList.add('hidden');
+                    body.classList.remove('loading');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            requestAnimationFrame(animateLoader);
+
+            setTimeout(function() {
+                if (!loader.classList.contains('hidden')) {
+                    loader.classList.add('hidden');
+                    body.classList.remove('loading');
+                    document.body.style.overflow = '';
+                }
+            }, 4000);
+        })();
+
+        // ============================================================
+        // SCROLL PROGRESS + HEADER
+        // ============================================================
+        (function() {
+            const progress = document.getElementById('progress');
+            const header = document.getElementById('header');
+            const links = document.querySelectorAll('.links a');
+            const sections = document.querySelectorAll('section[id]');
+
+            function onScroll() {
+                const h = document.documentElement;
+                const scrollTop = h.scrollTop || window.pageYOffset || 0;
+                const scrollHeight = h.scrollHeight - h.clientHeight;
+                const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+                progress.style.width = pct + '%';
+                progress.setAttribute('aria-valuenow', Math.round(pct));
+                header.classList.toggle('scrolled', scrollTop > 40);
+
+                let current = '';
+                sections.forEach(sec => {
+                    const top = sec.offsetTop - 100;
+                    if (scrollTop >= top) current = sec.id;
+                });
+                links.forEach(a => {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+                });
+            }
+
+            document.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        })();
+
+        // ============================================================
+        // MOBILE MENU
+        // ============================================================
+        (function() {
+            const burger = document.getElementById('burger');
+            const panel = document.getElementById('mobilePanel');
+            const scrim = document.getElementById('scrim');
+
+            function closeMenu() {
+                panel.classList.remove('open');
+                scrim.classList.remove('open');
+                burger.setAttribute('aria-expanded', 'false');
+            }
+
+            function openMenu() {
+                panel.classList.add('open');
+                scrim.classList.add('open');
+                burger.setAttribute('aria-expanded', 'true');
+            }
+
+            burger.addEventListener('click', function() {
+                panel.classList.contains('open') ? closeMenu() : openMenu();
+            });
+
+            scrim.addEventListener('click', closeMenu);
+            panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && panel.classList.contains('open')) closeMenu();
+            });
+        })();
+
+        // ============================================================
+        // NAV CTA — Shop Now
+        // ============================================================
+        document.getElementById('navCta').addEventListener('click', function() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // ============================================================
+        // SCROLL REVEAL
+        // ============================================================
+        (function() {
+            const revealEls = document.querySelectorAll('.reveal');
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('in');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -20px 0px' });
+                revealEls.forEach(el => io.observe(el));
+            } else {
+                revealEls.forEach(el => el.classList.add('in'));
+            }
+        })();
+
+        // ============================================================
+        // CONTACT FORM
+        // ============================================================
+        (function() {
+            const form = document.getElementById('contactForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btn = form.querySelector('button[type="submit"]');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Message Sent ✦';
+                btn.disabled = true;
+                form.reset();
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.disabled = false;
+                }, 2600);
+            });
+        })();
+
+        // ============================================================
+        // WHATSAPP MODAL
+        // ============================================================
+        (function() {
+            const waBtn = document.getElementById('waBtn');
+            const waModal = document.getElementById('waModal');
+            const closeWa = document.getElementById('closeWa');
+            const waSend = document.getElementById('waSendBtn');
+            const waInput = document.getElementById('waMessageInput');
+
+            function toggleModal(e) {
+                e.stopPropagation();
+                waModal.classList.toggle('open');
+            }
+
+            waBtn.addEventListener('click', toggleModal);
+            closeWa.addEventListener('click', function(e) {
+                e.stopPropagation();
+                waModal.classList.remove('open');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!waModal.contains(e.target) && e.target !== waBtn && !waBtn.contains(e.target)) {
+                    waModal.classList.remove('open');
+                }
+            });
+
+            waSend.addEventListener('click', function() {
+                const msg = waInput.value.trim() || "Hello AOSE, I'd like to know more about your brand.";
+                window.open('https://wa.me/15550000000?text=' + encodeURIComponent(msg), '_blank');
+                waInput.value = '';
+                waModal.classList.remove('open');
+            });
+
+            waInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') waSend.click();
+            });
+        })();
+
+        // ============================================================
+        // SMOOTH SCROLL FOR ANCHOR LINKS
+        // ============================================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        console.log('✦ AOSE — Timeless Elegance, Modern Legacy ✦');
+        console.log('✦ Step Into Vibrancy ✦');
+    </script>
+
+</body>
+</html>
